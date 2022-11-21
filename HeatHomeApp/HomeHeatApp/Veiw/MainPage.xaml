@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model ="clr-namespace:HeatHomeApp.Models"
+             xmlns:veiwmodel="clr-namespace:HeatHomeApp.VeiwModel"
+             x:DataType="veiwmodel:HeatingUnitVeiwModel"
+             x:Class="HeatHomeApp.MainPage"
+             BackgroundColor="{DynamicResource Background}"
+             Title="{Binding Title}"
+             >
+
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,auto"
+          RowSpacing="0"
+          Padding="0,20">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+             Command="{Binding GetHeatingUnitsCommand}"
+                     Grid.ColumnSpan="2">
+            <CollectionView
+                BackgroundColor="Transparent"
+                Grid.ColumnSpan="1"
+                ItemsSource="{Binding HeatingUnits}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:HeatingUnit">
+                        <Border WidthRequest="180"
+                            HeightRequest="100"
+                            Stroke="Transparent"
+                            StrokeThickness="2"
+                            BackgroundColor="{DynamicResource Yellow100Accent}"
+                            StrokeShape="RoundRectangle 4 25 40 25"
+                            >
+                            <!--<Border.Shadow>
+                                <Shadow Brush="{DynamicResource Yellow100Accent}"
+                                    Offset="0,0"
+                                    Opacity=".8"
+                                    />
+                            </Border.Shadow>-->
+                            <!--<Border.Background>
+                                <LinearGradientBrush EndPoint="1,0">
+                                    <GradientStop Color="{DynamicResource Yellow100Accent}"
+                          Offset="0.1" />
+                                    <GradientStop Color="{DynamicResource Orange100Accent}"
+                          Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Border.Background>-->
+                            <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="5"
+                              RowDefinitions="*,*"
+                              RowSpacing="0">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                    NumberOfTapsRequired="1"
+                                    CommandParameter="{Binding}" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type veiwmodel:HeatingUnitVeiwModel}}, Path=GoToHeatingUnitCommand }"/>
+                                </Grid.GestureRecognizers>
+                                <Label Text="{Binding Name}"
+                                   Grid.ColumnSpan="2"
+                                   Padding="10,5"
+                                   FontSize="Small"
+                                   FontAttributes="Bold"
+                                   BackgroundColor="Transparent"
+                                   ></Label>
+                                <Label Text="{Binding CurrentTemperature.Value, StringFormat='{0}&#186;C'}"
+                                   VerticalTextAlignment="Start"
+                                   HorizontalTextAlignment="End"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   FontSize="Medium"
+                                   FontAttributes="Bold"
+                                   BackgroundColor="Transparent"></Label>
+                                <Image
+                                 Source="temperature_icon"
+                                 Grid.Column="1"
+                                 Grid.Row="1"
+                                 TranslationY="-10"
+                                 TranslationX="10"
+                                 BackgroundColor="Transparent"
+                                 
+                                 >
+                                </Image>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Grid.ColumnSpan="2"
+                           Grid.RowSpan="2"
+                           Color="{DynamicResource Yellow100Accent}"></ActivityIndicator>
+        
+    </Grid>
+
+</ContentPage>
+        <!--<VerticalStackLayout 
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+            <CollectionView
+                ItemsSource="{Binding HeatingUnits}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:HeatingUnit">
+                        <Grid Padding="10">
+                            <Label Text="{Binding CurrentTemperature}" TextColor="White"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
+
+
+            <!--<Border WidthRequest="300"
+                                    HeightRequest="100"
+                                    Stroke="{DynamicResource Orange100Accent}"
+                                    StrokeThickness="3"
+                                    BackgroundColor="{DynamicResource Orange100Accent}"
+                                    StrokeShape="RoundRectangle 10 25 40 25">
+                <Border.Shadow>
+                    <Shadow Brush="{DynamicResource Yellow100Accent}"
+                                            Offset="10,10"
+                                            Opacity=".8"/>
+                </Border.Shadow>
+                <Grid>
+                    <Button Opacity="0"
+                                            Clicked="Button_Clicked"/>
+                </Grid>
+            </Border>-->
+
+
+            <!--<Border WidthRequest="300"
+                    HeightRequest="100"
+                    Stroke="{DynamicResource Orange100Accent}"
+                    StrokeThickness="3"
+                    BackgroundColor="{DynamicResource Orange100Accent}"
+                    StrokeShape="RoundRectangle 10 25 40 25"
+                    >
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{DynamicResource Yellow100Accent}"
+                        Offset="10,10"
+                        Opacity=".8"></Shadow>
+                </Border.Shadow>
+                <Button Opacity="0"
+                        Clicked="Button_Clicked"></Button>
+            </Border>
+            
+            <Label
+                Text="Hello, World!"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                TextColor="{DynamicResource Text}"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Welcome to .NET Multi-platform App UI"
+                TextColor="{DynamicResource Text}"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Center"
+                BackgroundColor="{DynamicResource Orange100Accent}"/>-->
+
+
+        <!--</VerticalStackLayout>
+    </Grid>-->
+
